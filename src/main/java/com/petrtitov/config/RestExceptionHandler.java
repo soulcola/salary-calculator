@@ -1,5 +1,6 @@
 package com.petrtitov.config;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -48,7 +49,13 @@ public class RestExceptionHandler {
             errors.addAll(bindException.getFieldErrors().stream()
                     .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
                     .toList());
-        } else errors.add(e.getMessage());
+        } else if (e instanceof ConstraintViolationException validationException) {
+            errors.addAll(validationException.getConstraintViolations().stream()
+                    .map(fe -> String.format("[%s] %s", fe.getPropertyPath(), fe.getMessage()))
+                    .toList());
+        } else {
+            errors.add(e.getMessage());
+        }
 
         return new ErrorInfo(errorType, errors);
     }

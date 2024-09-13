@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Pay {
+public class Payment {
     private double salary;
     private long vacationDays;
     private double payment;

@@ -1,9 +1,9 @@
 package com.petrtitov.service;
 
-import com.petrtitov.dto.ByDateWritePaymentDto;
-import com.petrtitov.dto.ByDaysWritePaymentDto;
-import com.petrtitov.model.Pay;
+import com.petrtitov.model.Payment;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 import static com.petrtitov.util.SalaryUtil.DAYS_AVG;
 import static com.petrtitov.util.SalaryUtil.countWorkingDays;
@@ -11,14 +11,13 @@ import static com.petrtitov.util.SalaryUtil.countWorkingDays;
 @Service
 public class VacationPayService {
 
-    public Pay calculateSalaryByDates(ByDateWritePaymentDto payment) {
-        var workingDays = countWorkingDays(payment.getStartDate(), payment.getEndDate());
-        var vacationPay = payment.getSalary() / DAYS_AVG * workingDays;
-        return new Pay(payment.getSalary(), workingDays, vacationPay);
+    public Payment calculateSalaryByDates(LocalDate startDate, LocalDate endDate, double salary) {
+        var workingDays = countWorkingDays(startDate, endDate);
+        return calculateSalaryByDays(workingDays, salary);
     }
 
-    public Pay calculateSalaryByDays(ByDaysWritePaymentDto payment) {
-        var vacationPay = payment.getSalary() / DAYS_AVG * payment.getVacationDays();
-        return new Pay(payment.getSalary(), payment.getVacationDays(), vacationPay);
+    public Payment calculateSalaryByDays(long days, double salary) {
+        var vacationPay = salary / DAYS_AVG * days;
+        return new Payment(salary, days, vacationPay);
     }
 }
