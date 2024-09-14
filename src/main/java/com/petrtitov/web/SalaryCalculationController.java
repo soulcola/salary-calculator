@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Slf4j
@@ -31,7 +32,7 @@ public class SalaryCalculationController {
     @Operation(summary = "Calculate vacation pay by vacation days and average monthly salary")
     @GetMapping(REST_URL)
     public Payment getVacationPay(@RequestParam @Positive long days,
-                                  @RequestParam @Positive double salary) {
+                                  @RequestParam @Positive @NotNull BigDecimal salary) {
         log.info("Calculate vacation pay: {} days, average monthly salary: {}", days, salary);
         return service.calculateSalaryByDays(days, salary);
     }
@@ -40,8 +41,11 @@ public class SalaryCalculationController {
     @GetMapping(REST_URL + "/by-dates")
     public Payment getVacationPayByDates(@RequestParam @NotNull LocalDate startDate,
                                          @RequestParam @NotNull LocalDate endDate,
-                                         @RequestParam @Positive double salary) {
+                                         @RequestParam @Positive @NotNull BigDecimal salary) {
         log.info("Calculate vacation pay: start date: {}, end date: {} monthly salary: {}", startDate, endDate, salary);
+        if (startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Start date is after end date");
+        }
         return service.calculateSalaryByDates(startDate, endDate, salary);
     }
 }

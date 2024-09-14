@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,15 +23,15 @@ import static com.petrtitov.config.ErrorType.*;
 @Slf4j
 public class RestExceptionHandler {
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(DateTimeParseException.class)
-    public ErrorInfo dateParseError(DateTimeParseException e) {
-        return logAndGetErrorInfo(e, DATA_ERROR);
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ErrorInfo dateParseError(IllegalArgumentException e) {
+        return logAndGetErrorInfo(e, INPUT_ERROR);
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler({MethodArgumentTypeMismatchException.class,
-            HttpMessageNotReadableException.class, BindException.class})
+            HttpMessageNotReadableException.class, ConstraintViolationException.class, BindException.class})
     public ErrorInfo validationError(Exception e) {
         return logAndGetErrorInfo(e, VALIDATION_ERROR);
     }
