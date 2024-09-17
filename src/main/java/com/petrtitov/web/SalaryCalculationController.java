@@ -4,10 +4,9 @@ import com.petrtitov.model.Payment;
 import com.petrtitov.service.VacationPayService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -39,8 +40,8 @@ public class SalaryCalculationController {
 
     @Operation(summary = "Calculate vacation pay by start date and end date and average monthly salary")
     @GetMapping(REST_URL + "/by-dates")
-    public Payment getVacationPayByDates(@RequestParam @NotNull LocalDate startDate,
-                                         @RequestParam @NotNull LocalDate endDate,
+    public Payment getVacationPayByDates(@RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                         @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
                                          @RequestParam @Positive @NotNull BigDecimal salary) {
         log.info("Calculate vacation pay: start date: {}, end date: {} monthly salary: {}", startDate, endDate, salary);
         if (startDate.isAfter(endDate)) {

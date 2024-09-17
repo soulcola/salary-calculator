@@ -1,6 +1,5 @@
 package com.petrtitov.config;
 
-import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -13,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.petrtitov.config.ErrorType.*;
 
@@ -44,14 +45,16 @@ public class RestExceptionHandler {
 
     private static ErrorInfo logAndGetErrorInfo(Exception e, ErrorType errorType) {
         List<String> errors = new ArrayList<>();
-        if (e instanceof BindException bindException) {
+        if (e.getClass().equals(BindException.class)) {
+            BindException bindException = (BindException) e;
             errors.addAll(bindException.getFieldErrors().stream()
                     .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
-                    .toList());
-        } else if (e instanceof ConstraintViolationException validationException) {
+                    .collect(Collectors.toList()));
+        } else if (e.getClass().equals(ConstraintViolationException.class)) {
+            ConstraintViolationException validationException = (ConstraintViolationException) e;
             errors.addAll(validationException.getConstraintViolations().stream()
                     .map(fe -> String.format("[%s] %s", fe.getPropertyPath(), fe.getMessage()))
-                    .toList());
+                    .collect(Collectors.toList()));
         } else {
             errors.add(e.getMessage());
         }

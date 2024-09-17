@@ -48,7 +48,7 @@ public class SalaryCalculationControllerTest {
                 .andReturn();
 
         var actual = JsonUtil.readValue(result.getResponse().getContentAsString(), Payment.class);
-        Assertions.assertThat(actual).usingRecursiveAssertion().isEqualTo(testPayment1);
+        Assertions.assertThat(actual).usingRecursiveComparison().isEqualTo(testPayment1);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class SalaryCalculationControllerTest {
                 .andReturn();
 
         var actual = JsonUtil.readValue(result.getResponse().getContentAsString(), Payment.class);
-        Assertions.assertThat(actual).usingRecursiveAssertion().isEqualTo(testPayment2);
+        Assertions.assertThat(actual).usingRecursiveComparison().isEqualTo(testPayment2);
     }
 
     @Test
