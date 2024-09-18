@@ -10,12 +10,13 @@ GET "/calculacte"
 Минимальные требования: Приложение принимает твою среднюю зарплату за 12 месяцев и количество дней отпуска - отвечает суммой отпускных, которые придут сотруднику.
 Доп. задание: При запросе также можно указать точные дни ухода в отпуск, тогда должен проводиться рассчет отпускных с учётом праздников и выходных.
 -------------------------------------------------------------
-- Stack: [JDK 11](http://jdk.java.net/17/), Spring Boot 2.x, Lombok, SpringDoc OpenApi 1.x 
+- Stack: [JDK 11](http://jdk.java.net/11/), Spring Boot 2.x, Lombok, SpringDoc OpenApi 1.x 
 - Run: `mvn spring-boot:run` in root directory.
 -----------------------------------------------------
 
-Swagger UI link
-[REST API documentation](http://localhost:8080/)  
+Swagger UI link:
 
-Working instance 
+[REST API documentation](http://localhost:8080/)  
+[Working instance](http://http://neoflex.petrtitov.com/)  
+
 

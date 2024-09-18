@@ -45,12 +45,12 @@ public class RestExceptionHandler {
 
     private static ErrorInfo logAndGetErrorInfo(Exception e, ErrorType errorType) {
         List<String> errors = new ArrayList<>();
-        if (e.getClass().equals(BindException.class)) {
+        if (e instanceof BindException) {
             BindException bindException = (BindException) e;
             errors.addAll(bindException.getFieldErrors().stream()
                     .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
                     .collect(Collectors.toList()));
-        } else if (e.getClass().equals(ConstraintViolationException.class)) {
+        } else if (e instanceof ConstraintViolationException) {
             ConstraintViolationException validationException = (ConstraintViolationException) e;
             errors.addAll(validationException.getConstraintViolations().stream()
                     .map(fe -> String.format("[%s] %s", fe.getPropertyPath(), fe.getMessage()))
