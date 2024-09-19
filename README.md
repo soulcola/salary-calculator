@@ -17,6 +17,6 @@ GET "/calculacte"
 Swagger UI link:
 
 [REST API documentation](http://localhost:8080/)  
-[Working instance](http://http://neoflex.petrtitov.com/)  
+[Working instance](http://neoflex.petrtitov.com/)  
 
 
